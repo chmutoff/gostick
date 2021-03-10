@@ -1,0 +1,123 @@
+<!DOCTYPE HTML>
+
+<html>
+
+<head>
+	<title>GoStick</title>
+	<meta charset="utf-8">
+	<style>
+		* {
+			box-sizing: border-box;
+		}
+
+		body {
+			margin: 0px;
+			padding: 0px;
+			font-family: monospace;
+		}
+
+		.row {
+			display: inline-flex;
+			clear: both;
+		}
+
+		.columnLateral {
+			float: left;
+			width: 15%;
+			min-width: 300px;
+		}
+
+		.columnCetral {
+			float: left;
+			width: 70%;
+			min-width: 300px;
+		}
+
+		.text-center {
+			text-align: center;
+		}
+
+		#joy1Div,
+		#joy2Div {
+			width: 200px;
+			height: 200px;
+			margin: 50px 0 10px 50px
+		}
+
+		#joy1DivInfo,
+		#joy2DivInfo {
+			margin-left: 50px;
+		}
+
+		#joystick1 {
+			border: 2px solid red;
+		}
+
+		#joystick2 {
+			border: 2px solid blue;
+		}
+	</style>
+	<script src="js/jquery-2.1.0.min.js"></script>
+	<script src="js/joy.js"></script>
+</head>
+
+<body>
+	<div class="row">
+		<div class="columnLateral">
+			<div id="joy1Div"></div>
+
+			<div id="joy1DivInfo">
+				<p>Joystick 1</p>
+				<label for="joy1X">X1</label>
+				<input id="joy1X" type="text" disabled /></br>
+
+				<label for="joy1Y">Y1</label>
+				<input id="joy1Y" type="text" disabled />
+			</div>
+		</div>
+		<div class="columnCetral">
+			<h2 class="text-center">JoyStick</h2>
+		</div>
+		<div class="columnLateral">
+			<div id="joy2Div"></div>
+
+			<div id="joy1DivInfo">
+				<p>Joystick 2</p>
+				<label for="joy2X">X2</label>
+				<input id="joy2X" type="text" disabled /></br>
+
+				<label for="joy2Y">Y2</label>
+				<input id="joy2Y" type="text" disabled />
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+
+		var Joy1 = new JoyStick('joy1Div', { "title": "joystick1", "autoReturnToCenter": false, internalFillColor: "red", internalStrokeColor: "black", externalStrokeColor: "red" });
+		var joy1X = document.getElementById("joy1X");
+		var joy1Y = document.getElementById("joy1Y");
+
+
+		var Joy2 = new JoyStick('joy2Div', { "title": "joystick2", "autoReturnToCenter": true, internalFillColor: "blue", internalStrokeColor: "black", externalStrokeColor: "blue" });
+		var joy2X = document.getElementById("joy2X");
+		var joy2Y = document.getElementById("joy2Y");
+
+		setInterval(function () {
+			joy1X.value = Joy1.GetX();
+			joy1Y.value = Joy1.GetY();
+			joy2X.value = Joy2.GetX();
+			joy2Y.value = Joy2.GetY();
+
+			$.ajax({
+				url: '/ajax',
+				type: "get",
+				data: { x1: Joy2.GetX(), y1: Joy2.GetY(), x2: Joy1.GetX(), y2: Joy1.GetY() },
+				success: function (r) {
+					$('#response').append(r.Quote);
+				}
+			});
+		}, 50);
+	</script>
+</body>
+
+</html>
