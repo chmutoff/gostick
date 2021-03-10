@@ -12,14 +12,6 @@ import (
 
 var serialPort *serial.Port
 
-//JoystickValues saves the axis values of 2 joysticks
-type JoystickValues struct {
-	X1 int `json:"x1"`
-	Y1 int `json:"y1"`
-	X2 int `json:"x2"`
-	Y2 int `json:"y2"`
-}
-
 // Default Request Handler
 func defaultHandler(w http.ResponseWriter, r *http.Request) {
 	fp := path.Join("html", "index.html")
@@ -45,7 +37,7 @@ func ajaxHandler(w http.ResponseWriter, r *http.Request) {
 	x2 := keys["x2"][0]
 	y2 := keys["y2"][0]
 
-	var controlString string = "x1:" + x1 + ",y1:" + y1 + ",x2:" + x2 + ",y2:" + y2
+	var controlString string = "x1:" + x1 + ",y1:" + y1 + ",x2:" + x2 + ",y2:" + y2 + "\n"
 	log.Print(controlString)
 
 	n, err := serialPort.Write([]byte(controlString))
@@ -58,7 +50,7 @@ func ajaxHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	c := &serial.Config{Name: "COM4", Baud: 115200}
+	c := &serial.Config{Name: "COM3", Baud: 9600}
 	var err error
 	serialPort, err = serial.OpenPort(c)
 	if err != nil {
