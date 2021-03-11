@@ -24,7 +24,7 @@
 		.columnLateral {
 			float: left;
 			width: 15%;
-			min-width: 300px;
+			min-width: 370px;
 		}
 
 		.columnCetral {
@@ -77,6 +77,16 @@
 		</div>
 		<div class="columnCetral">
 			<h2 class="text-center">JoyStick</h2>
+
+			<label for="port">Serial port</label>
+			<input id="port" type="text" /></br>
+
+			<label for="interval">Interval</label>
+			<input id="interval" type="text" /></br>
+
+			<button type="button">Start</button>
+
+			<p id="response"></p>
 		</div>
 		<div class="columnLateral">
 			<div id="joy2Div"></div>
@@ -113,7 +123,7 @@
 				type: "get",
 				data: { x1: Joy2.GetX(), y1: Joy2.GetY(), x2: Joy1.GetX(), y2: Joy1.GetY() },
 				success: function (r) {
-					$('#response').append(r.Quote);
+					//$('#response').append(r);
 				}
 			});
 		}, 200);
